@@ -117,29 +117,48 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  */
 createReviewHTML = (review) => {
   const li = document.createElement('li');
+  const divHeader = document.createElement('div');
+  divHeader.classList.add('review-header');
+  divHeader.classList.add('row');
+  // divHeader.className = 'review-header';
+
+  const divContent = document.createElement('div');
+  divContent.className = 'review-content';
   const name = document.createElement('p');
   name.innerHTML = review.name;
-  li.appendChild(name);
+  name.classList.add('review-name');
+  name.classList.add('col');
+  // name.className = 'review-name';
+
+  divHeader.appendChild(name);
 
   const date = document.createElement('p');
   date.innerHTML = review.date;
-  li.appendChild(date);
+  date.classList.add('review-date');
+  date.classList.add('col');
+  // date.className = 'review-date';
+  divHeader.appendChild(date);
+
+  li.appendChild(divHeader);
 
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
-  li.appendChild(rating);
+  rating.className = 'review-rating';
+  divContent.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
-  li.appendChild(comments);
-
+  comments.className = 'review-comments';
+  divContent.appendChild(comments);
+  li.appendChild(divContent);
+  li.className = 'round-corners';
   return li;
 }
 
 /**
  * Add restaurant name to the breadcrumb navigation menu
  */
-fillBreadcrumb = (restaurant=self.restaurant) => {
+fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
