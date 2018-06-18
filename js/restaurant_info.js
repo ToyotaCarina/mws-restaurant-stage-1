@@ -1,5 +1,9 @@
 let restaurant;
 var map;
+const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
+  'Saturday'
+];
+var now = new Date();
 
 /**
  * Initialize Google map, called from HTML.
@@ -58,6 +62,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img'
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.alt = restaurant.name;
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
@@ -85,6 +90,9 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
     const time = document.createElement('td');
     time.innerHTML = operatingHours[key];
     row.appendChild(time);
+    if (key == days[now.getDay()]) {
+      row.style.fontWeight = 'bold';
+    }
 
     hours.appendChild(row);
   }
@@ -143,7 +151,9 @@ createReviewHTML = (review) => {
 
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
-  rating.className = 'review-rating';
+  // rating.className = 'review-rating';
+  rating.classList.add('review-rating');
+  rating.classList.add('round-corners-5');
   divContent.appendChild(rating);
 
   const comments = document.createElement('p');
