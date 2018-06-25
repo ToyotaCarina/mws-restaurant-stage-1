@@ -8,6 +8,7 @@ var markers = []
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
+  InitServiceWorker();
   fetchNeighborhoods();
   fetchCuisines();
 });
@@ -127,31 +128,39 @@ resetRestaurants = (restaurants) => {
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
-  restaurants.forEach(restaurant => {
-    ul.append(createRestaurantHTML(restaurant));
+  restaurants.forEach((restaurant, index) => {
+    ul.append(createRestaurantHTML(restaurant, index));
   });
   addMarkersToMap();
+  buttonInit();
 }
 
 /**
  * Create restaurant HTML.
  */
-createRestaurantHTML = (restaurant) => {
+createRestaurantHTML = (restaurant, index) => {
   const li = document.createElement('li');
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  image.alt = restaurant.name;
+  if (restaurant.photograph_desc) {
+    image.alt = restaurant.photograph_desc;
+  } else {
+    image.alt = restaurant.name;
+  }
   li.append(image);
+  li.setAttribute('tabindex', 0);
 
   const div = document.createElement('div');
   div.className = 'restaurant-body';
   const name = document.createElement('h1');
   name.innerHTML = restaurant.name;
+  name.id = 'restName' + index;
   div.append(name);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
+  neighborhood.id = 'restNeighborhood' + index;
   div.append(neighborhood);
 
   const address = document.createElement('p');
@@ -161,7 +170,11 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
+  more.className = 'restaurant-details';
+  more.setAttribute('role', 'button');
+  more.setAttribute('aria-describedby', name.id + ' ' + neighborhood.id);
   div.append(more);
+
   li.append(div);
   return li
 }
@@ -183,12 +196,14 @@ addMarkersToMap = (restaurants = self.restaurants) => {
 /**
  * Service Worker
  */
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
-    .then(function(registration) {
-      console.log('Registration successful, scope is:', registration.scope);
-    })
-    .catch(function(error) {
-      console.log('Service worker registration failed, error:', error);
-    });
+InitServiceWorker = () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(registration) {
+        console.log('Registration successful, scope is:', registration.scope);
+      })
+      .catch(function(error) {
+        console.log('Service worker registration failed, error:', error);
+      });
+  }
 }

@@ -62,8 +62,11 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img'
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  image.alt = restaurant.name;
-
+  if (restaurant.photograph_desc) {
+    image.alt = restaurant.photograph_desc;
+  } else {
+    image.alt = restaurant.name;
+  }
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
 
@@ -105,6 +108,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
+  title.setAttribute('tabindex', 0);
   container.appendChild(title);
 
   if (!reviews) {
@@ -136,7 +140,6 @@ createReviewHTML = (review) => {
   name.innerHTML = review.name;
   name.classList.add('review-name');
   name.classList.add('col');
-  // name.className = 'review-name';
 
   divHeader.appendChild(name);
 
@@ -144,14 +147,12 @@ createReviewHTML = (review) => {
   date.innerHTML = review.date;
   date.classList.add('review-date');
   date.classList.add('col');
-  // date.className = 'review-date';
   divHeader.appendChild(date);
 
   li.appendChild(divHeader);
 
   const rating = document.createElement('p');
   rating.innerHTML = `Rating: ${review.rating}`;
-  // rating.className = 'review-rating';
   rating.classList.add('review-rating');
   rating.classList.add('round-corners-5');
   divContent.appendChild(rating);
@@ -162,6 +163,7 @@ createReviewHTML = (review) => {
   divContent.appendChild(comments);
   li.appendChild(divContent);
   li.className = 'round-corners';
+  li.setAttribute('tabindex', 0);
   return li;
 }
 

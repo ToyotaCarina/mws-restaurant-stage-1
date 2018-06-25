@@ -36,9 +36,7 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-  console.log(event.request.url);
   var requestUrl = new URL(event.request.url);
-  console.log(requestUrl.pathname);
   if (requestUrl.origin === location.origin) {
     if (requestUrl.pathname.startsWith('/img/')) {
       event.respondWith(servePhoto(event.request));
