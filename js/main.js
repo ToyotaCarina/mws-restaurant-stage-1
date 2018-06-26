@@ -153,7 +153,7 @@ createRestaurantHTML = (restaurant, index) => {
 
   const div = document.createElement('div');
   div.className = 'restaurant-body';
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   name.id = 'restName' + index;
   div.append(name);
@@ -191,19 +191,4 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     });
     self.markers.push(marker);
   });
-};
-
-/**
- * Service Worker
- */
-InitServiceWorker = () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-      .then(function(registration) {
-        console.log('Registration successful, scope is:', registration.scope);
-      })
-      .catch(function(error) {
-        console.log('Service worker registration failed, error:', error);
-      });
-  }
 };

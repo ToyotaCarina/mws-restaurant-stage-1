@@ -6,6 +6,13 @@ const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
 var now = new Date();
 
 /**
+ * Initialize Service worker as soon as the page is loaded.
+ */
+document.addEventListener('DOMContentLoaded', (event) => {
+  InitServiceWorker();
+});
+
+/**
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
